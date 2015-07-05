@@ -23,6 +23,7 @@
 #include <iostream>
 #include "json.h"
 #include "Endpoint.h"
+#include "swiftcpp_export.h"
 
 namespace Swift {
 /**
@@ -42,7 +43,7 @@ namespace Swift {
      }
  */
 
-class Service {
+class SWIFTCPP_EXPORT Service {
   std::string name;
   std::string type;
   std::vector<Endpoint*> endpoints;

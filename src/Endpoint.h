@@ -21,11 +21,14 @@
 #define ENDPOINT_H_
 
 #include <iostream>
+#include <string>
 #include "json.h"
+#include "swiftcpp_export.h"
 
 namespace Swift {
 
-class Endpoint {
+class SWIFTCPP_EXPORT Endpoint
+{
   std::string adminURL;
   std::string id;
   std::string internalURL;

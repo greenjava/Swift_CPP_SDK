@@ -22,10 +22,11 @@
 #include <iostream>
 #include "Tenant.h"
 #include "json.h"
+#include "swiftcpp_export.h"
 
 namespace Swift {
 
-class Token {
+class SWIFTCPP_EXPORT Token {
 private:
   std::string expires;
   std::string id;

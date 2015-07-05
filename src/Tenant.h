@@ -21,11 +21,13 @@
 #define TENANT_H_
 
 #include <iostream>
+#include <string>
 #include "json.h"
+#include "swiftcpp_export.h"
 
 namespace Swift {
 
-class Tenant {
+class SWIFTCPP_EXPORT Tenant {
 private:
   std::string id;
   std::string name;

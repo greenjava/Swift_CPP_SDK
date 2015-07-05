@@ -22,9 +22,11 @@
 
 #include <iostream>
 
+#include "swiftcpp_export.h"
+
 namespace Swift {
 
-struct HTTPHeader {
+struct SWIFTCPP_EXPORT HTTPHeader {
 private:
   std::pair<std::string,std::string> pair;
 public:

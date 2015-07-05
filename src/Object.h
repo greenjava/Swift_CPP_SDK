@@ -21,12 +21,14 @@
 #define OBJECT_H_
 
 #include "Container.h"
+#include "swiftcpp_export.h"
+
 #include <Poco/HashMap.h>
 #include <Poco/Net/HTTPClientSession.h>
 
 namespace Swift {
 
-class Object {
+class SWIFTCPP_EXPORT Object {
   Container* container;
   std::string name;
   size_t length;

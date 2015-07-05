@@ -34,6 +34,7 @@
 #include "Header.h"
 #include "SwiftResult.h"
 #include "Account.h"
+#include "swiftcpp_export.h"
 
 namespace Swift {
 

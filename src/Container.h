@@ -21,12 +21,14 @@
 #define CONTAINER_H_
 
 #include "Account.h"
+#include "swiftcpp_export.h"
 
 namespace Swift {
 
 class Object;
 
-class Container {
+class SWIFTCPP_EXPORT Container
+{
   Account* account;
   std::string name;
   uint64_t bytes;

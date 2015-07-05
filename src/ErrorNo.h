@@ -23,9 +23,12 @@
 #include <iostream>
 #include <cstring>
 
+#include "swiftcpp_export.h"
+
 namespace Swift {
 
-struct SwiftError {
+struct SWIFTCPP_EXPORT SwiftError
+{
   int code;
   std::string msg;
   SwiftError(int _code, std::string _msg);

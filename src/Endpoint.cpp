@@ -39,7 +39,7 @@ Endpoint* Endpoint::fromJSON(const Json::Value &val) {
   instance->setInternalUrl(val.get("internalURL", Json::Value::null).asString());
   instance->setPublicUrl(val.get("publicURL", Json::Value::null).asString());
   instance->setRegion(val.get("region", Json::Value::null).asString());
-
+  
   return instance;
 }
 

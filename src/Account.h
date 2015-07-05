@@ -25,6 +25,7 @@
 #include "Authentication.h"
 #include "SwiftResult.h"
 #include "Header.h"
+#include "swiftcpp_export.h"
 
 #include <cstdint>
 #include <iostream>
@@ -38,7 +39,8 @@ struct Role;
 /** Forward declare Container **/
 class Container;
 
-class Account {
+class SWIFTCPP_EXPORT Account
+{
 private:
 
   /**

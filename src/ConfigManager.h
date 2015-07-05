@@ -24,13 +24,15 @@
 #include <cstring>
 #include "ErrorNo.h"
 #include "ConfigKey.h"
+#include "swiftcpp_export.h"
 
 namespace Swift {
 
 using namespace std;
 using namespace Poco;
 
-class ConfigManager {
+class SWIFTCPP_EXPORT ConfigManager
+{
 private:
 
 public:

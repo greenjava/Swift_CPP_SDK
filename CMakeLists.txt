@@ -46,13 +46,27 @@ source_group("Source Files" FILES ${SOURCE_FILES})
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
+option(BUILD_SHARED_LIBS "Build shared library." ON)
 add_library(SwiftCpp ${SOURCE_FILES} ${HEADER_FILES})
 
 target_link_libraries(SwiftCpp ${Poco_Foundation_LIB} ${Poco_Net_LIB})
 target_include_directories(SwiftCpp SYSTEM PRIVATE ${Poco_INCLUDE_DIR})
 
-install( TARGETS ${PROJECT_NAME}
-    RUNTIME DESTINATION ${CMAKE_INSTALL_PREFIX}/${CMAKE_BUILD_TYPE}/bin
-    LIBRARY DESTINATION ${CMAKE_INSTALL_PREFIX}/${CMAKE_BUILD_TYPE}/lib
-    ARCHIVE DESTINATION ${CMAKE_INSTALL_PREFIX}/${CMAKE_BUILD_TYPE}/lib
+if(MSVC)
+  # Disable the warning C4251
+  add_definitions("/wd4251")
+endif()
+
+include(GenerateExportHeader)
+set(CMAKE_CXX_VISIBILITY_PRESET hidden)
+set(CMAKE_VISIBILITY_INLINES_HIDDEN 1)
+generate_export_header(SwiftCpp)
+
+install(TARGETS SwiftCpp
+    RUNTIME DESTINATION ${CMAKE_INSTALL_PREFIX}/bin
+    LIBRARY DESTINATION ${CMAKE_INSTALL_PREFIX}/lib
+    ARCHIVE DESTINATION ${CMAKE_INSTALL_PREFIX}/lib
 )
+install(FILES ${HEADER_FILES} DESTINATION ${CMAKE_INSTALL_PREFIX}/include/swiftcpp)
+install(FILES ${CMAKE_CURRENT_BINARY_DIR}/swiftcpp_export.h DESTINATION ${CMAKE_INSTALL_PREFIX}/include)
+
