@@ -71,7 +71,7 @@ Poco::Net::HTTPClientSession* doHTTPIO(const Poco::URI& uri,
 
   //write request body
   ostream &ostream = session->sendRequest(request);
-  if (ostream == nullptr)
+  if (!ostream.good())
     return nullptr;
   ostream << reqBody;
   return session;
@@ -79,7 +79,7 @@ Poco::Net::HTTPClientSession* doHTTPIO(const Poco::URI& uri,
 
 Poco::Net::HTTPClientSession* doHTTPIO(const Poco::URI& uri,
     const std::string& type, std::vector<HTTPHeader>* params,
-    const char* reqBody, ulong size, const std::string& contentType) {
+    const char* reqBody, uint32_t size, const std::string& contentType) {
   HTTPClientSession *session = new HTTPClientSession(uri.getHost(),
       uri.getPort());
   HTTPRequest request(type, uri.getPathAndQuery());
@@ -100,7 +100,7 @@ Poco::Net::HTTPClientSession* doHTTPIO(const Poco::URI& uri,
 
   //write request body
   ostream &ostream = session->sendRequest(request);
-  if (ostream == nullptr)
+  if (!ostream.good())
     return nullptr;
   ostream << reqBody;
   return session;
@@ -148,21 +148,21 @@ template
 SwiftResult<istream*>* doSwiftTransaction<istream*>(Account *_account,
     std::string &_uriPath, const std::string &_method,
     std::vector<HTTPHeader>* _uriParams, std::vector<HTTPHeader>* _reqMap,
-    std::vector<int> *_httpValidCodes, const char *bodyReqBuffer, ulong size,
+    std::vector<int> *_httpValidCodes, const char *bodyReqBuffer, uint32_t size,
     std::string *contentType);
 
 template
 SwiftResult<int*>* doSwiftTransaction<int*>(Account *_account,
     std::string &_uriPath, const std::string &_method,
     std::vector<HTTPHeader>* _uriParams, std::vector<HTTPHeader>* _reqMap,
-    std::vector<int> *_httpValidCodes, const char *bodyReqBuffer, ulong size,
+    std::vector<int> *_httpValidCodes, const char *bodyReqBuffer, uint32_t size,
     std::string *contentType);
 
 template<class T>
 SwiftResult<T>* doSwiftTransaction(Account *_account, std::string &_uriPath,
     const std::string &_method, std::vector<HTTPHeader>* _uriParams,
     std::vector<HTTPHeader>* _reqMap, std::vector<int> *_httpValidCodes,
-    const char *bodyReqBuffer, ulong size, std::string *contentType) {
+    const char *bodyReqBuffer, uint32_t size, std::string *contentType) {
   //Start locking
   lock_guard<recursive_mutex> guard(transactionMutex);
   //Start of function
@@ -180,7 +180,7 @@ SwiftResult<T>* doSwiftTransaction(Account *_account, std::string &_uriPath,
   reqParamMap.push_back(authHeader);
   //Add rest of request Parameters
   if (_reqMap != nullptr && _reqMap->size() > 0) {
-    for (uint i = 0; i < _reqMap->size(); i++) {
+    for (unsigned int i = 0; i < _reqMap->size(); i++) {
       reqParamMap.push_back(_reqMap->at(i));
     }
   }
@@ -198,7 +198,7 @@ SwiftResult<T>* doSwiftTransaction(Account *_account, std::string &_uriPath,
     //Create appropriate URI
     ostringstream queryStream;
     //queryStream << "?";
-    for (uint i = 0; i < _uriParams->size(); i++) {
+    for (unsigned int i = 0; i < _uriParams->size(); i++) {
       if (i > 0)
         queryStream << ",";
       queryStream << _uriParams->at(i).getQueryValue();
@@ -228,7 +228,7 @@ SwiftResult<T>* doSwiftTransaction(Account *_account, std::string &_uriPath,
     if (std::is_same<T, std::istream*>::value)
       resultStream = &httpSession->receiveResponse(*httpResponse);
     else
-    	httpSession->receiveResponse(*httpResponse);
+      httpSession->receiveResponse(*httpResponse);
   } catch (Exception &e) {
     SwiftResult<T> *result = new SwiftResult<T>();
     SwiftError error(SwiftError::SWIFT_EXCEPTION, e.displayText());
@@ -244,17 +244,17 @@ SwiftResult<T>* doSwiftTransaction(Account *_account, std::string &_uriPath,
    * Check HTTP return code
    */
   bool valid = false;
-  for (uint i = 0; i < _httpValidCodes->size(); i++)
+  for (unsigned int i = 0; i < _httpValidCodes->size(); i++)
     if (_httpValidCodes->at(i) == httpResponse->getStatus()) {
       valid = true;
       break;
     }
 
   if (!valid) {
-  	Logger::DEBUG()<<"Invalid Return code:";
-    httpResponse->write(Logger::DEBUG());
+    Logger::SWIFT_DEBUG()<<"Invalid Return code:";
+    httpResponse->write(Logger::SWIFT_DEBUG());
     if(httpResponse->getStatus() == 200)
-      Logger::ERROR()<<"bullshit"<<endl;
+      Logger::SWIFT_ERROR()<<"bullshit"<<endl;
     if(httpResponse->getStatus() == HTTPResponse::HTTP_UNAUTHORIZED) {
       if(_account->reAuthenticate()) {
         delete httpSession;httpSession = nullptr;

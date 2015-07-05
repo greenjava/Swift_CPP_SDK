@@ -42,7 +42,7 @@ Service* Service::fromJSON(const Json::Value &val) {
   instance->setType(val.get("type", Json::Value::null).asString());
   //Parsing endpoint array information
   Json::Value endpoint = val.get("endpoints",Json::nullValue);
-  for(uint i=0;i<endpoint.size();i++)
+  for(unsigned int i=0;i<endpoint.size();i++)
     instance->endpoints.push_back(Endpoint::fromJSON(endpoint[i]));
 
   return instance;
@@ -55,7 +55,7 @@ Json::Value* Service::toJSON(const Service &instance) {
   (*json)["name"] = instance.getName();
   //Create endpoints Arrayindex
   (*json)["endpoints"] = Json::Value(Json::arrayValue);
-  for(uint i=0;i<instance.getEndpoints().size();i++) {
+  for(unsigned int i=0;i<instance.getEndpoints().size();i++) {
     Json::Value info;
 
     std::string tmp = instance.getEndpoints()[i]->getId();

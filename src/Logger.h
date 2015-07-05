@@ -51,10 +51,10 @@ public:
     errStream = &_errorStream;
   }
 
-  static std::ostream& INFO() {return *infoStream;}
-  static std::ostream& FATAL() {return *fatalStream;}
-  static std::ostream& ERROR() {return *errStream;}
-  static std::ostream& DEBUG() {return *debugStream;}
+  static std::ostream& SWIFT_INFO() {return *infoStream;}
+  static std::ostream& SWIFT_FATAL() { return *fatalStream; }
+  static std::ostream& SWIFT_ERROR() { return *errStream; }
+  static std::ostream& SWIFT_DEBUG() { return *debugStream; }
 };
 NullBuffer Logger::null_buffer;
 std::ostream Logger::null_stream(&Logger::null_buffer);

@@ -29,7 +29,7 @@ using namespace Poco::Net;
 namespace Swift {
 
 /** Initialize Static members **/
-ulong Account::numOfCalls = 0;
+uint32_t Account::numOfCalls = 0;
 
 struct Role {
   string name = "null";
@@ -149,7 +149,7 @@ SwiftResult<Account*>* Account::authenticate(
   //Roles
   Json::Value roles = userRoot.get("roles", Json::nullValue);
   if (roles != Json::nullValue) {
-    for (uint i = 0; i < roles.size(); i++) {
+    for (unsigned int i = 0; i < roles.size(); i++) {
       Role *role = Role::fromJSON(roles[i]);
       instance->roles.push_back(role);
     }
@@ -160,7 +160,7 @@ SwiftResult<Account*>* Account::authenticate(
   //Parse Service Information
   Json::Value serviceRoot = root.get("serviceCatalog", Json::nullValue);
   if (serviceRoot != Json::nullValue)
-    for (uint i = 0; i < serviceRoot.size(); i++)
+    for (unsigned int i = 0; i < serviceRoot.size(); i++)
       instance->services.push_back(Service::fromJSON(serviceRoot[i]));
 
   //Return result
@@ -201,11 +201,11 @@ bool Account::isAllowReauthenticate() {
   return this->allowReauthenticate;
 }
 
-ulong Account::increaseCallCounter() {
+uint32_t Account::increaseCallCounter() {
   return ++numOfCalls;
 }
 
-ulong Account::getNumberOfCalls() {
+uint32_t Account::getNumberOfCalls() {
   return Account::numOfCalls;
 }
 
@@ -218,7 +218,7 @@ Token* Account::getToken() {
 }
 
 Service* Account::getSwiftService() {
-  for (uint i = 0; i < services.size(); i++)
+  for (unsigned int i = 0; i < services.size(); i++)
     if (services[i]->getType() == "object-store")
       return services[i];
   return nullptr;
@@ -232,7 +232,7 @@ string Account::toString() {
 
   //Build Roles
   roleStream << "Roles: {";
-  for (uint i = 0; i < roles.size(); i++) {
+  for (unsigned int i = 0; i < roles.size(); i++) {
     Json::Value* roleJSON = Role::toJSON(*roles[i]);
     roleStream << jsonWriter.write(*roleJSON) << ",";
     delete roleJSON;
@@ -241,7 +241,7 @@ string Account::toString() {
   roleStream << "}";
   //Build Services
   serviceStream << "Services: {";
-  for (uint i = 0; i < services.size(); i++) {
+  for (unsigned int i = 0; i < services.size(); i++) {
     Json::Value* serviceJSON = Service::toJSON(*services[i]);
     serviceStream << jsonWriter.write(*serviceJSON) << ",";
     delete serviceJSON;
@@ -328,7 +328,7 @@ SwiftResult<int*>* Account::swiftCreateMetadata(
       _reqMap = new vector<HTTPHeader>();
       shouldDelete = true;
     }
-    for (uint i = 0; i < _metaData.size(); i++) {
+    for (unsigned int i = 0; i < _metaData.size(); i++) {
       HTTPHeader header("X-Account-Meta-" + _metaData[i].first, _metaData[i].second);
       _reqMap->push_back(header);
     }
@@ -368,7 +368,7 @@ SwiftResult<int*>* Account::swiftDeleteMetadata(
       _reqMap = new vector<HTTPHeader>();
       shouldDelete = true;
     }
-    for (uint i = 0; i < _metaDataKeys.size(); i++) {
+    for (unsigned int i = 0; i < _metaDataKeys.size(); i++) {
       HTTPHeader header("X-Remove-Account-Meta-" + _metaDataKeys[i], "x");
       _reqMap->push_back(header);
     }
@@ -417,7 +417,7 @@ SwiftResult<vector<Container>*>* Account::swiftGetContainers(bool _newest) {
   //Allocate containers
   vector<Container>*containers = new vector<Container>();
   //Successful parse
-  for(uint i=0;i<root.size();i++) {
+  for(unsigned int i=0;i<root.size();i++) {
     string name = root[i].get("name","").asString();
     string count = root[i].get("count","").asString();
     string bytes = root[i].get("bytes","").asString();

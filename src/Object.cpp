@@ -32,7 +32,7 @@ namespace Swift {
 template<class T>
 extern SwiftResult<T>* returnNullError(const string &whatsNull);
 
-Object::Object(Container* _container, std::string _name, long _length,
+Object::Object(Container* _container, std::string _name, size_t _length,
     std::string _content_type, std::string _hash, std::string _last_modified) :
     container(_container), name(_name), length(_length), content_type(
         _content_type), hash(_hash), last_modified(_last_modified) {
@@ -63,7 +63,7 @@ SwiftResult<istream*>* Object::swiftGetObjectContent(
 }
 
 SwiftResult<int*>* Object::swiftCreateReplaceObject(const char* _data,
-    ulong _size, bool _calculateETag, std::vector<HTTPHeader>* _uriParams,
+    uint32_t _size, bool _calculateETag, std::vector<HTTPHeader>* _uriParams,
     std::vector<HTTPHeader>* _reqMap) {
   //Check Container
   if (container == nullptr)
@@ -196,7 +196,7 @@ SwiftResult<istream*>* Object::swiftCreateMetadata(
     std::vector<std::pair<std::string, std::string> > *existingMeta =
         getExistingMetaData();
     if (existingMeta != nullptr && existingMeta->size() > 0)
-      for (uint i = 0; i < existingMeta->size(); i++)
+      for (unsigned int i = 0; i < existingMeta->size(); i++)
         if (_metaData.find(existingMeta->at(i).first) == _metaData.end())
           _metaData.insert(
               map<string, string>::value_type(existingMeta->at(i).first,
@@ -248,11 +248,11 @@ SwiftResult<istream*>* Object::swiftDeleteMetadata(
   std::vector<std::pair<std::string, std::string> > *existingMeta =
       getExistingMetaData();
   if (existingMeta != nullptr && existingMeta->size() > 0)
-    for (uint i = 0; i < existingMeta->size(); i++)
+    for (unsigned int i = 0; i < existingMeta->size(); i++)
       metaData.insert(
           make_pair(existingMeta->at(i).first, existingMeta->at(i).second));
 
-  for (uint i = 0; i < _metaDataKeys.size(); i++) {
+  for (unsigned int i = 0; i < _metaDataKeys.size(); i++) {
     map<string, string>::iterator it = metaData.find(_metaDataKeys[i]);
     if (it != metaData.end())
       metaData.erase(it);
@@ -290,7 +290,7 @@ SwiftResult<HTTPClientSession*>* Object::swiftCreateReplaceObject(std::ostream* 
   reqParamMap.push_back(encHeader);
   //Add rest of request Parameters
   if (_reqMap != nullptr && _reqMap->size() > 0) {
-    for (uint i = 0; i < _reqMap->size(); i++) {
+    for (unsigned int i = 0; i < _reqMap->size(); i++) {
       reqParamMap.push_back(_reqMap->at(i));
     }
   }
@@ -306,7 +306,7 @@ SwiftResult<HTTPClientSession*>* Object::swiftCreateReplaceObject(std::ostream* 
   if (_uriParams != nullptr && _uriParams->size() > 0) {
     //Create appropriate URI
     ostringstream queryStream;
-    for (uint i = 0; i < _uriParams->size(); i++) {
+    for (unsigned int i = 0; i < _uriParams->size(); i++) {
       if (i > 0)
         queryStream << ",";
       queryStream << _uriParams->at(i).getQueryValue();
@@ -454,11 +454,11 @@ void Object::setLastModified(const std::string& lastModified) {
   last_modified = lastModified;
 }
 
-long Object::getLength() {
+size_t Object::getLength() {
   return length;
 }
 
-void Object::setLength(long length) {
+void Object::setLength(size_t length) {
   this->length = length;
 }
 

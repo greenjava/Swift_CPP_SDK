@@ -44,7 +44,7 @@ Poco::Net::HTTPClientSession* doHTTPIO(const Poco::URI &uri,
     const std::string &reqBody, const std::string &contentType);
 Poco::Net::HTTPClientSession* doHTTPIO(const Poco::URI &uri,
     const std::string &type, std::vector<HTTPHeader> *params,
-    const char* reqBody, ulong size, const std::string& contentType);
+    const char* reqBody, uint32_t size, const std::string& contentType);
 Poco::Net::HTTPClientSession* doHTTPIO(const Poco::URI &uri,
     const std::string &type, std::vector<HTTPHeader> *params,
     std::ostream* &outputStream);
@@ -53,7 +53,7 @@ template<class T>
 SwiftResult<T>* doSwiftTransaction(Account *_account, std::string &_uriPath,
     const std::string &_method, std::vector<HTTPHeader>* _uriParams,
     std::vector<HTTPHeader>* _reqMap, std::vector<int> *_httpValidCodes,
-    const char *bodyReqBuffer = nullptr, ulong size = 0,
+    const char *bodyReqBuffer = nullptr, uint32_t size = 0,
     std::string *contentType = nullptr);
 
 template<class T>

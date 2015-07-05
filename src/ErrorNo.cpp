@@ -18,6 +18,8 @@
 **************************************************************************/
 #include <iostream>
 #include <cstring>
+#include <sstream>
+
 #include "ErrorNo.h"
 
 namespace Swift {
@@ -28,10 +30,9 @@ SwiftError::SwiftError(int _code, std::string _msg) {
 }
 
 const std::string SwiftError::toString() {
-  int len = strlen(msg.c_str()) + 20;
-  char *temp = new char[len];
-  snprintf(temp, len, "Error %d: %s", code, msg.c_str());
-  return std::string(temp);
+  std::stringstream stream;
+  stream << "Error " << code << ": " << msg;
+  return stream.str();
 }
 
 //Always the same message

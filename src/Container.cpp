@@ -158,7 +158,7 @@ SwiftResult<int*>* Container::swiftCreateMetadata(
       _reqMap = new vector<HTTPHeader>();
       shouldDelete = true;
     }
-    for (uint i = 0; i < _metaData.size(); i++) {
+    for (unsigned int i = 0; i < _metaData.size(); i++) {
       HTTPHeader header("X-Container-Meta-" + _metaData[i].first,
           _metaData[i].second);
       _reqMap->push_back(header);
@@ -205,7 +205,7 @@ SwiftResult<int*>* Container::swiftDeleteMetadata(
       _reqMap = new vector<HTTPHeader>();
       shouldDelete = true;
     }
-    for (uint i = 0; i < _metaDataKeys.size(); i++) {
+    for (unsigned int i = 0; i < _metaDataKeys.size(); i++) {
       HTTPHeader header("X-Remove-Container-Meta-" + _metaDataKeys[i], "x");
       _reqMap->push_back(header);
     }
@@ -256,9 +256,9 @@ SwiftResult<vector<Object>*>* Container::swiftGetObjects(bool _newest) {
   //Allocate containers
   vector<Object>*objects = new vector<Object>();
   //Successful parse
-  for(uint i=0;i<root.size();i++) {
+  for(unsigned int i=0;i<root.size();i++) {
     string name = root[i].get("name","").asString();
-    long length = root[i].get("bytes",-1).asInt64();
+    size_t length = root[i].get("bytes", -1).asInt64();
     string content_type = root[i].get("content_type","").asString();
     string hash = root[i].get("hash","").asString();
     string last_modified = root[i].get("last_modified","").asString();

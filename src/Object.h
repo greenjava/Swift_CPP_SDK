@@ -29,12 +29,12 @@ namespace Swift {
 class Object {
   Container* container;
   std::string name;
-  long length;
+  size_t length;
   std::string content_type;
   std::string hash;
   std::string last_modified;
 public:
-  Object(Container* _container, std::string _name = "", long _length = -1,
+  Object(Container* _container, std::string _name = "", size_t _length = -1,
       std::string _content_type = "", std::string _hash = "",
       std::string _last_modified = "");
   virtual ~Object();
@@ -50,8 +50,8 @@ public:
   void setHash(const std::string& _hash);
   std::string getLastModified();
   void setLastModified(const std::string& _lastModified);
-  long getLength();
-  void setLength(long _length);
+  size_t getLength();
+  void setLength(size_t _length);
 
   /** API Functions **/
 
@@ -77,7 +77,7 @@ public:
    *  recommended to do so because it'll check the integrity of object
    *  on the server.
    */
-  SwiftResult<int*>* swiftCreateReplaceObject(const char* _data, ulong _size,
+  SwiftResult<int*>* swiftCreateReplaceObject(const char* _data, uint32_t _size,
       bool _calculateETag = true, std::vector<HTTPHeader> *_uriParams = nullptr,
       std::vector<HTTPHeader> *_reqMap = nullptr);
 
